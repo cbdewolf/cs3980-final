@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Path, status
 from models.application import Application, ApplicationRequest
 
-application_router = APIRouter()
+application_router = APIRouter(prefix="/applications", tags=["applications"])
 
 
 @application_router.get("")
