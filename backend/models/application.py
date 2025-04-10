@@ -11,6 +11,9 @@ class Application(BaseModel):
     status: str
     notes: Optional[str] = None
 
+    class Settings:
+        name = "applications"
+
 
 class ApplicationRequest(BaseModel):
     company: str
