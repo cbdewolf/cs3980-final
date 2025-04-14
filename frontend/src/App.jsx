@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import NavBar from './nav-bar';
-import Button from './button';
+import NavBar from '../components/nav-bar';
+import Button from '../components/button';
 
 /**
  * Main App component
