@@ -5,13 +5,10 @@
   min-height: 100vh;
   background-color: #f4f6f8;
   padding: 2rem;
-
-  /* Fix for centering even if a parent element is too wide */
   box-sizing: border-box;
   width: 100%;
 }
 
-/* Wider box for web apps */
 .login-box {
   background-color: white;
   padding: 3rem 2.5rem;
@@ -21,7 +18,7 @@
   max-width: 500px;
 }
 
-/* Title styling */
+
 .login-title {
   text-align: center;
   font-size: 28px;
@@ -30,7 +27,6 @@
   color: #333;
 }
 
-/* Input form layout */
 .login-form .form-group {
   width: 95%;
   margin-bottom: 1.5rem;

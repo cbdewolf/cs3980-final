@@ -3,34 +3,20 @@ import NavBar from '../components/nav-bar';
 import Button from '../components/button';
 import Login from '../pages/login'
 import Register from '../pages/register'
+import Dashboard from '../pages/dashboard';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-/**
- * Main App component
- */
-const App = () => {
-  const [count, setCount] = useState(0);
-  
-  // Sample navigation links
-  const navLinks = [
-    { text: 'Home', url: '#' },
-    { text: 'About', url: '#about' },
-    { text: 'Services', url: '#services' },
-    { text: 'Contact', url: '#contact' },
-  ];
-
-  // Increment counter
-  const incrementCount = () => {
-    setCount(prevCount => prevCount + 1);
-  };
-
-  // Decrement counter
-  const decrementCount = () => {
-    setCount(prevCount => prevCount - 1);
-  };
-
+function App() {
   return (
-    <Register />
-  );
-};
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </Router>
+  )
+}
+
 
 export default App;
