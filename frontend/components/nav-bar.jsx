@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../styles/nav-bar.css';
 
 /**
  * Navigation bar component
