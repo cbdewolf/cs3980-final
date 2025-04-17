@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import NavBar from '../components/nav-bar';
-import Button from '../components/button';
-import Login from '../pages/login'
-import Register from '../pages/register'
-import Dashboard from '../pages/dashboard';
+import NavBar from './components/NavBar';
+import Button from './components/button';
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Dashboard from './pages/Dashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {

@@ -1,11 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
-  base: '/static/', // ✅ this tells React to use /static/ for all assets
+  base: mode === 'production' ? '/static/' : '/',  // ✅ conditional base
   build: {
     outDir: '../backend/static',
     emptyOutDir: true,
   },
-})
+  server: {
+    port: 5173,
+    open: true,
+    strictPort: true,
+    watch: {
+      usePolling: true,
+    },
+    // Optional: handles /dashboard refresh 404s
+    historyApiFallback: true,
+  },
+}))

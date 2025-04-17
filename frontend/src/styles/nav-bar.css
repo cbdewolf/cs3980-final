@@ -1,0 +1,27 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #007bff;
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+  }
+  
+  .nav-left {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .nav-item {
+    cursor: pointer;
+  }
+  
+  .nav-item:hover {
+    text-decoration: underline;
+  }
+  
+  .username {
+    font-weight: bold;
+  }
+  

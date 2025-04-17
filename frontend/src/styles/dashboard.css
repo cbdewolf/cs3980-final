@@ -1,0 +1,40 @@
+.dashboard-container {
+    max-width: 1600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff; 
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.applications-container {
+    max-width: 1600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff; 
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-actions {
+    padding: 2rem;
+}
+.dashboard-heading {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.status-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+  
+
+.status-card {
+    flex: 1 1 160px; 
+    max-width: 180px;
+    min-width: 120px;
+}
+
+  
