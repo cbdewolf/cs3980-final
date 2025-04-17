@@ -1,7 +1,5 @@
 import React from 'react';
 import '../styles/application-table.css';
-import DeleteApplication from './DeleteApplication';
-import EditApplication from './EditApplication';
 
 
 export default function ApplicationTable({ applications }) {

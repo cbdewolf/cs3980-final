@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import '../styles/register.css'
+import NavBar from '../components/NavBar'
 
 const Register = () => {
 
@@ -53,57 +54,60 @@ const Register = () => {
     }
 
     return (
-        <div className="register-container">
-            <div className="register-box">
-            <h2 className="register-title">Register</h2>
-            <form className="register-form" onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="username">Username </label>
-                    <input 
-                        type="text" 
-                        id="username" 
-                        value={username} 
-                        onChange={(e) => setUsername(e.target.value)} 
-                        className="form-input"
-                    />
+        <>
+            <NavBar />
+            <div className="register-container">
+                <div className="register-box">
+                <h2 className="register-title">Register</h2>
+                <form className="register-form" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="username">Username </label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            value={username} 
+                            onChange={(e) => setUsername(e.target.value)} 
+                            className="form-input"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="confirmUsername">Confirm Username </label>
+                        <input 
+                            type="text" 
+                            id="confrimUsername" 
+                            value={confirmUsername} 
+                            onChange={(e) => setConfirmUsername(e.target.value)} 
+                            className="form-input"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Password </label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
+                            className="form-input"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="confrimPassword">Confirm Password </label>
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            value={confirmPassword} 
+                            onChange={(e) => setConfirmPassword(e.target.value)} 
+                            className="form-input"
+                        />
+                    </div>
+                    {error && <p className="error-message">{error}</p>}
+                    <button type="submit" className="login-button" disabled={loading}>
+                        {loading ? 'Registering...' : 'Register'}
+                    </button>
+                </form>
                 </div>
-                <div className="form-group">
-                    <label htmlFor="confirmUsername">Confirm Username </label>
-                    <input 
-                        type="text" 
-                        id="confrimUsername" 
-                        value={confirmUsername} 
-                        onChange={(e) => setConfirmUsername(e.target.value)} 
-                        className="form-input"
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password </label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        className="form-input"
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="confrimPassword">Confirm Password </label>
-                    <input 
-                        type="password" 
-                        id="confirmPassword" 
-                        value={confirmPassword} 
-                        onChange={(e) => setConfirmPassword(e.target.value)} 
-                        className="form-input"
-                    />
-                </div>
-                {error && <p className="error-message">{error}</p>}
-                <button type="submit" className="login-button" disabled={loading}>
-                    {loading ? 'Registering...' : 'Register'}
-                </button>
-            </form>
             </div>
-        </div>
+        </>
     )    
 }
 
