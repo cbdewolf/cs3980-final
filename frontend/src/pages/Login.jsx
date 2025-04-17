@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import '../styles/login.css'
+import NavBar from '../components/NavBar'
 
 const Login = () => {
 
@@ -39,37 +40,40 @@ const Login = () => {
     }
 
     return (
-        <div className="login-container">
-            <div className="login-box">
-            <h2 className="login-title">Login</h2>
-            <form className="login-form" onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="username">Username </label>
-                    <input 
-                        type="text" 
-                        id="username" 
-                        value={username} 
-                        onChange={(e) => setUsername(e.target.value)} 
-                        className="form-input"
-                    />
+        <>
+            <NavBar />
+            <div className="login-container">
+                <div className="login-box">
+                <h2 className="login-title">Login</h2>
+                <form className="login-form" onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="username">Username </label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            value={username} 
+                            onChange={(e) => setUsername(e.target.value)} 
+                            className="form-input"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Password </label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
+                            className="form-input"
+                        />
+                    </div>
+                    {error && <p className="error-message">{error}</p>}
+                    <button type="submit" className="login-button" disabled={loading}>
+                        {loading ? 'Logging in...' : 'Login'}
+                    </button>
+                </form>
                 </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password </label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        className="form-input"
-                    />
-                </div>
-                {error && <p className="error-message">{error}</p>}
-                <button type="submit" className="login-button" disabled={loading}>
-                    {loading ? 'Logging in...' : 'Login'}
-                </button>
-            </form>
             </div>
-        </div>
+        </>
     )
 }
 
