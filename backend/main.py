@@ -6,6 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from backend.routers.application_routes import application_router
 from backend.routers.reminder_routes import reminder_router
+from backend.routers.company_routes import company_router
+from backend.routers.user_routes import user_router
 from backend.db.db_context import init_db
 
 
@@ -19,10 +21,14 @@ async def lifespan(app: FastAPI):
     print("shutting down app...")
 
 
-app = FastAPI(title="jab-application-tracker", version="1.0.0", lifespan=lifespan)
+app = FastAPI(title="job-application-tracker", version="1.0.0", lifespan=lifespan)
 # in the future need to include user and company routers as well
-app.include_router(application_router, tags=["applications"], prefix="/applications")
-app.include_router(reminder_router, tags=["reminders"], prefix="/reminders")
+app.include_router(
+    application_router, tags=["applications"], prefix="/api/applications"
+)
+app.include_router(reminder_router, tags=["reminders"], prefix="/api/reminders")
+app.include_router(company_router, tags=["companies"], prefix="/api/companies")
+app.include_router(user_router, tags=["auth"], prefix="/api/users")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[

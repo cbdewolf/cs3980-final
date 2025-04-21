@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import '../styles/register.css'
 import NavBar from '../components/NavBar'
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-
     const [username, setUsername] = useState('')
     const [confirmUsername, setConfirmUsername] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -37,8 +38,8 @@ const Register = () => {
         try {
             const response = await fetch('http://127.0.0.1:8000/auth/register', {
                 method:'POST',
-                headers: { 'Content-Type' : 'application/json' },
-                body: JSON.stringify({ username, password }),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({username, password})
             })
 
             const data = await response.json()
@@ -46,6 +47,8 @@ const Register = () => {
             if (!response.ok) {
                 throw new Error(data.detail || 'Registration failed')
             }
+            localStorage.setItem("token", data.access_token)
+            navigate("/dashboard")
         } catch(error) {
             setError(error.message)
         } finally {
@@ -74,7 +77,7 @@ const Register = () => {
                         <label htmlFor="confirmUsername">Confirm Username </label>
                         <input 
                             type="text" 
-                            id="confrimUsername" 
+                            id="confirmUsername" 
                             value={confirmUsername} 
                             onChange={(e) => setConfirmUsername(e.target.value)} 
                             className="form-input"

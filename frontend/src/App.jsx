@@ -10,7 +10,7 @@ import Companies from './pages/Companies';
 function App() {
   return (
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/reminders" element={<Reminders />} />

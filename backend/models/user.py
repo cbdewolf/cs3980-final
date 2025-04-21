@@ -1,14 +1,39 @@
 from beanie import Document
 from pydantic import BaseModel
-
-"""
-todo: implement user model and other user authentication fun stuff
-"""
+from typing import Optional
 
 
 class User(Document):
-    pass
+    # maybe email in future, lets stick with username/pass for now
+    username: str
+    password: str
+    bio: Optional[str] = ""
+    profile_pic: Optional[str] = ""
+    position: Optional[str] = ""
+    school: Optional[str] = ""
+    major: Optional[str] = ""
+
+    class Settings:
+        name = "users"
 
 
 class UserRequest(BaseModel):
-    pass
+    """
+    model for user signup
+    """
+
+    username: str
+    password: str
+    bio: Optional[str] = ""
+    profile_pic: Optional[str] = ""
+    position: Optional[str] = ""
+    school: Optional[str] = ""
+    major: Optional[str] = ""
+
+
+class UserUpdateRequest(BaseModel):
+    bio: Optional[str] = None
+    profile_pic: Optional[str] = None
+    position: Optional[str] = None
+    school: Optional[str] = None
+    major: Optional[str] = None

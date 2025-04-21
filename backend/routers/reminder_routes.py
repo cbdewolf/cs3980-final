@@ -28,11 +28,10 @@ async def get_reminder_by_id(id: PydanticObjectId):
 @reminder_router.post("", status_code=status.HTTP_201_CREATED)
 async def add_reminder(reminder: ReminderRequest):
     new_reminder = reminder(
-        title=reminder.title,
-        description=reminder.description,
+        text=reminder.text,
+        completed=reminder.completed,
         date=reminder.date,
         time=reminder.time,
-        status=reminder.status,
     )
     await reminder.insert(new_reminder)
     return new_reminder
@@ -46,11 +45,10 @@ async def update_reminder(id: PydanticObjectId, reminder: ReminderRequest):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="reminder not found"
         )
-    existing_reminder.title = reminder.title
-    existing_reminder.description = reminder.description
+    existing_reminder.text = reminder.text
+    existing_reminder.completed = reminder.completed
     existing_reminder.date = reminder.date
     existing_reminder.time = reminder.time
-    existing_reminder.status = reminder.status
     await existing_reminder.save()
     return existing_reminder
 

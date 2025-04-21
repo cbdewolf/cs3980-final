@@ -12,7 +12,6 @@ async def init_db():
     client = AsyncIOMotorClient(my_config.connection_string)
     db = client["final_project"]
     await init_beanie(
-        # Company and reminder in the future, they aren't implemented yet
         database=db,
-        document_models=[User, Application],
+        document_models=[User, Application, Reminder, Company],
     )

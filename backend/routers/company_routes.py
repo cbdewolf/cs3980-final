@@ -1,3 +1,64 @@
 from beanie import PydanticObjectId
 from fastapi import APIRouter, HTTPException, status
 from backend.models.company import Company, CompanyRequest
+
+company_router = APIRouter()
+
+
+# get all companies
+@company_router.get("")
+async def get_companies():
+    return await Company.find_all().to_list()
+
+
+# get company by an id
+@company_router.get("/{id}")
+async def get_Company_by_id(id: PydanticObjectId):
+    company = await Company.get(id)
+    if not company:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Company not found"
+        )
+    return company
+
+
+# create an company
+@company_router.post("", status_code=status.HTTP_201_CREATED)
+async def add_company(company: CompanyRequest):
+    new_company = Company(
+        name=company.name,
+        description=company.description,
+        website=company.website,
+        applications=company.applications,
+        user_id=company.user_id,
+    )
+    await Company.insert(new_company)
+    return new_company
+
+
+# update company
+@company_router.put("/{id}")
+async def update_company(id: PydanticObjectId, company: CompanyRequest):
+    existing_company = await Company.get(id)
+    if not existing_company:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="company not found"
+        )
+    existing_company.name = company.name
+    existing_company.description = company.description
+    existing_company.website = company.website
+    existing_company.applications = company.applications
+    await existing_company.save()
+    return existing_company
+
+
+# delete an company
+@company_router.delete("/{id}")
+async def remove_Company(id: PydanticObjectId):
+    company = await Company.get(id)
+    if not company:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Company not found"
+        )
+    await company.delete()
+    return {"message": "company deleted successfully"}

@@ -3,10 +3,22 @@ todo: implement company model and other company related fun stuff
 what even are we doing with companies?
 """
 
+from beanie import Document
+from pydantic import BaseModel
 
-class Company:
-    pass
+
+class Company(Document):
+    name: str
+    description: str
+    website: str
+    applications: list[str]
+
+    class Settings:
+        name = "companies"
 
 
-class CompanyRequest:
-    pass
+class CompanyRequest(BaseModel):
+    name: str
+    description: str
+    website: str
+    applications: list[str]

@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import '../styles/nav-bar.css';
 import { Link } from 'react-router-dom';
-
+import { UserContext } from '../contexts/UserContext';
 
 // the user will evnetually fetched from backend to get the user who is logged in
-export default function NavBar({ username = "Guest"}) {
+export default function NavBar() {
+
+    const { user, logout } = useContext(UserContext);
+
     return (
         <nav className="navbar">
             <div className="nav-left">
@@ -13,7 +16,8 @@ export default function NavBar({ username = "Guest"}) {
                 <Link to="/reminders" className="nav-item">Reminders</Link>
             </div>
             <div className="nav-right">
-                <Link to="/userhome" className="username">{ username }</Link>
+                <button onClick={logout} className="logout">Logout</button>
+                <Link to="/userhome" className="username">{ user?.username || "New? Click Here to Register!"}</Link>
             </div>
         </nav>
     )

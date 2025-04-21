@@ -19,7 +19,7 @@ const Dashboard = () => {
     const fetchApplications = async () => {
       console.log("Window origin:", window.location.origin)
       try {
-        const response = await fetch('http://localhost:8000/applications')
+        const response = await fetch('http://localhost:8000/api/applications')
         const data = await response.json()
         setApplications(data)
       } catch (error) {
@@ -32,7 +32,7 @@ const Dashboard = () => {
   // Handle adding a new application
   const handleAddApplication = async (application) => {
     try {
-      const response = await fetch('http://localhost:8000/applications', {
+      const response = await fetch('http://localhost:8000/api/applications', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ const Dashboard = () => {
   // Handle form submission for editing
   const handleEditSubmit = async (updatedApp) => {
     try {
-      const response = await fetch(`http://localhost:8000/applications/${updatedApp._id}`, {
+      const response = await fetch(`http://localhost:8000/api/applications/${updatedApp._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -89,7 +89,7 @@ const Dashboard = () => {
   // Handle confirmation for deleting
   const handleDeleteConfirm = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/applications/${currentApp._id}`, {
+      const response = await fetch(`http://localhost:8000/api/applications/${currentApp._id}`, {
         method: 'DELETE'
       })
       if (!response.ok) throw new Error('failed to delete app')
