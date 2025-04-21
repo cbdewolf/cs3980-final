@@ -1,12 +1,28 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import os
-from application_routes import application_router
+from backend.routers.application_routes import application_router
+from backend.routers.reminder_routes import reminder_router
+from backend.db.db_context import init_db
 
-app = FastAPI()
-app.include_router(application_router)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # startup
+    print("starting app....")
+    await init_db()
+    yield
+    # shutdown
+    print("shutting down app...")
+
+
+app = FastAPI(title="jab-application-tracker", version="1.0.0", lifespan=lifespan)
+# in the future need to include user and company routers as well
+app.include_router(application_router, tags=["applications"], prefix="/applications")
+app.include_router(reminder_router, tags=["reminders"], prefix="/reminders")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -25,7 +41,7 @@ def root():
 
 
 @app.get("/{full_path:path}")
-async def serve_spa(full_path: str):
+async def serve_spa():
     index_file_path = os.path.join("static", "index.html")
     if os.path.exists(index_file_path):
         return FileResponse(index_file_path)

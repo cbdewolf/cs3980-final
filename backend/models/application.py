@@ -1,10 +1,10 @@
 from datetime import date
 from typing import Optional
 from pydantic import BaseModel
+from beanie import Document
 
 
-class Application(BaseModel):
-    id: Optional[str] = None
+class Application(Document):
     company: str
     position: str
     date_applied: date
