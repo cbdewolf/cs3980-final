@@ -42,7 +42,6 @@ const ApplicationForm = ({ onSubmit, onCancel }) => {
                 </label>
                 <div className="form-actions">
                     <button type="submit">Save</button>
-                    <button type="button" onClick={onCancel}>Cancel</button>
                 </div>
             </form>
         </div>

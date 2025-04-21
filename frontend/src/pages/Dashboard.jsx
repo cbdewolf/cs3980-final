@@ -95,7 +95,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <NavBar username="test" />
+      <NavBar />
       <div className="dashboard-container">
         <h2 className="dashboard-heading">Your Applications</h2>
         <div className="status-cards">
