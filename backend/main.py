@@ -25,7 +25,12 @@ app.include_router(application_router, tags=["applications"], prefix="/applicati
 app.include_router(reminder_router, tags=["reminders"], prefix="/reminders")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:8000",
+        "http://localhost:8000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -42,7 +47,7 @@ def root():
 
 @app.get("/{full_path:path}")
 async def serve_spa():
-    index_file_path = os.path.join("static", "index.html")
+    index_file_path = os.path.join(static_path, "index.html")
     if os.path.exists(index_file_path):
         return FileResponse(index_file_path)
     return {"error": "Frontend not built"}

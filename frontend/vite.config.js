@@ -3,19 +3,9 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig(({ mode }) => ({
   plugins: [react()],
-  base: mode === 'production' ? '/static/' : '/',  // ✅ conditional base
+  base: mode === 'production' ? '/static/' : '/',
   build: {
-    outDir: '../backend/static',
+    outDir: '../backend/static', // ✅ MUST match FastAPI
     emptyOutDir: true,
-  },
-  server: {
-    port: 5173,
-    open: true,
-    strictPort: true,
-    watch: {
-      usePolling: true,
-    },
-    // Optional: handles /dashboard refresh 404s
-    historyApiFallback: true,
   },
 }))

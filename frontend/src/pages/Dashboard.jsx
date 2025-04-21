@@ -6,18 +6,47 @@ import AddNewApplication from '../components/AddNewApplication'
 import Modal from '../components/Modal'
 import ApplicationForm from '../components/ApplicationForm'
 import ApplicationTable from '../components/ApplicationTable'
+import EditApplication from '../components/EditApplication'
 
 const Dashboard = () => {
   // in the future, this will be fetched from backend using useEffect
   const [applications, setApplications] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [currentApp, setCurrentApp] = useState(null)
-  const [modalContent, setModalContent] = useState('add') // 'add', 'edit', or 'delete'
+  const [modalContent, setModalContent] = useState(null) // 'add', 'edit', or 'delete'
+
+  useEffect(() => {
+    const fetchApplications = async () => {
+      console.log("Window origin:", window.location.origin)
+      try {
+        const response = await fetch('http://localhost:8000/applications')
+        const data = await response.json()
+        setApplications(data)
+      } catch (error) {
+        console.error('Error fetching applications:', error)
+      }
+    } 
+    fetchApplications()
+  }, [])
 
   // Handle adding a new application
-  const handleAddApplication = (application) => {
-    setApplications([...applications, application])
-    setShowModal(false)
+  const handleAddApplication = async (application) => {
+    try {
+      const response = await fetch('http://localhost:8000/applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(application)
+      })
+
+      if (!response.ok) throw new Error('failed to add app')
+      const createdApp = await response.json()
+      setApplications((prev) => [...prev, createdApp])
+      setShowModal(false)
+    } catch (error) {
+      console.error("add app failed, ", error)
+    }
   }
 
   // Handle editing an application
@@ -35,19 +64,41 @@ const Dashboard = () => {
   }
 
   // Handle form submission for editing
-  const handleEditSubmit = (updatedApp) => {
-    const updatedApps = applications.map(app => 
-      app.id === updatedApp.id ? updatedApp : app
-    )
-    setApplications(updatedApps)
-    setShowModal(false)
+  const handleEditSubmit = async (updatedApp) => {
+    try {
+      const response = await fetch(`http://localhost:8000/applications/${updatedApp._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...updatedApp,
+          _id: currentApp._id
+        })
+      })
+      if (!response.ok) throw new Error('failed to update app')
+      const updatedAppData = await response.json()
+      setApplications((prev) => prev.map(app => app._id === updatedAppData._id ? updatedAppData : app))
+      setShowModal(false)
+      setCurrentApp(null)
+    } catch (error) {
+      console.error("update app failed, ", error)
+    }
   }
 
   // Handle confirmation for deleting
-  const handleDeleteConfirm = () => {
-    const updatedApps = applications.filter(app => app.id !== currentApp.id)
-    setApplications(updatedApps)
-    setShowModal(false)
+  const handleDeleteConfirm = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/applications/${currentApp._id}`, {
+        method: 'DELETE'
+      })
+      if (!response.ok) throw new Error('failed to delete app')
+      setApplications((prev) => prev.filter(app => app._id !== currentApp._id))
+      setShowModal(false)
+      setCurrentApp(null)
+    } catch (error) {
+      console.error("delete app failed, ", error)
+    }
   }
 
   // Render modal content based on current action
@@ -58,11 +109,12 @@ const Dashboard = () => {
           <ApplicationForm 
             onCancel={() => setShowModal(false)}
             onSubmit={handleAddApplication}
+            initialValues={{}} 
           />
         )
       case 'edit':
         return (
-          <ApplicationForm 
+          <ApplicationForm
             onCancel={() => setShowModal(false)}
             onSubmit={handleEditSubmit}
             initialValues={currentApp}

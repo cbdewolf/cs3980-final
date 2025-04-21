@@ -7,37 +7,74 @@
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     font-size: 0.95rem;
-  }
-  
-  .application-table th,
-  .application-table td {
-    padding: 1rem 1.2rem;
-    text-align: left;
-    border-bottom: 1px solid #eaeaea;
-  }
-  
-  .application-table th {
-    background-color: #f4f6f8;
-    font-weight: 600;
-    color: #333;
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .application-table tr:hover {
-    background-color: #f9f9f9;
-  }
-  
-  .application-table td {
-    color: #444;
-  }
-  
-  
-  .no-apps-msg {
-    text-align: center;
-    margin-top: 2rem;
-    color: #666;
-    font-style: italic;
-  }
-  
+}
+
+.application-table th,
+.application-table td {
+  padding: 1rem 1.2rem;
+  text-align: left;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.application-table th {
+  background-color: #f4f6f8;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.application-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.application-table td {
+  color: #444;
+}
+
+
+.no-apps-msg {
+  text-align: center;
+  margin-top: 2rem;
+  color: #666;
+  font-style: italic;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+
+.edit-btn {
+  background-color: #e0f0ff;
+  color: #007bff;
+}
+
+.edit-btn:hover {
+  background-color: #cce4ff;
+  transform: translateY(-1px);
+}
+
+.delete-btn {
+  background-color: #ffe0e0;
+  color: #e03e3e;
+}
+
+.delete-btn:hover {
+  background-color: #ffc7c7;
+  transform: translateY(-1px);
+}
