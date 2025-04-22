@@ -17,7 +17,11 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem('token');
-      if (!token) return;
+      if (!token) {
+        setUser(null);
+        setLoading(false);
+        return
+      }
 
       try {
         const res = await fetch('http://127.0.0.1:8000/api/users/me', {
@@ -26,14 +30,25 @@ export const UserProvider = ({ children }) => {
           },
         });
 
+        if (res.status === 401) {
+          console.warn("User fetch failed with status: 401");
+          localStorage.removeItem("token");
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
         if (!res.ok) {
           console.warn("User fetch failed with status:", res.status);
+          setLoading(false);
           return;
         }
         const data = await res.json();
         setUser(data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
 

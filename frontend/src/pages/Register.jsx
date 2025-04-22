@@ -36,7 +36,7 @@ const Register = () => {
         }
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/auth/register', {
+            const response = await fetch('http://127.0.0.1:8000/api/users/register', {
                 method:'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({username, password})
@@ -107,6 +107,9 @@ const Register = () => {
                     <button type="submit" className="login-button" disabled={loading}>
                         {loading ? 'Registering...' : 'Register'}
                     </button>
+                    <div className="register-footer">
+                        <p>Already have an account? <a href="/login">Login here</a></p>
+                    </div>
                 </form>
                 </div>
             </div>

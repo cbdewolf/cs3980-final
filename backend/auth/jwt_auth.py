@@ -36,3 +36,4 @@ def decode_jwt_token(token: str) -> TokenData | None:
         return TokenData(username=username, exp_datetime=datetime.fromtimestamp(exp))
     except jwt.InvalidTokenError:
         print("Invalid JWT token.")
+        return None

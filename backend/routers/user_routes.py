@@ -26,8 +26,15 @@ hash_password = HashPassword()
 
 
 def get_user(token: Annotated[str, Depends(oauth2_scheme)]) -> TokenData:
-    print(token)
-    return decode_jwt_token(token)
+    user = decode_jwt_token(token)
+
+    if user is None or not user.username:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token",
+        )
+
+    return user
 
 
 user_router = APIRouter()

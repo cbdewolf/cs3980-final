@@ -16,8 +16,14 @@ export default function NavBar() {
                 <Link to="/reminders" className="nav-item">Reminders</Link>
             </div>
             <div className="nav-right">
-                <button onClick={logout} className="logout">Logout</button>
-                <Link to="/userhome" className="username">{ user?.username || "New? Click Here to Register!"}</Link>
+                {user ? (
+                    <>
+                        <button onClick={logout} className="logout">Logout</button>
+                        <Link to="/userhome" className="username">{user.username}</Link>
+                    </>
+                ) : (
+                    <Link to="/register" className="username">New? Click here to Register!</Link>
+                )}
             </div>
         </nav>
     )

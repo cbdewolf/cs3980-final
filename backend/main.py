@@ -28,7 +28,7 @@ app.include_router(
 )
 app.include_router(reminder_router, tags=["reminders"], prefix="/api/reminders")
 app.include_router(company_router, tags=["companies"], prefix="/api/companies")
-app.include_router(user_router, tags=["auth"], prefix="/api/users")
+app.include_router(user_router, tags=["users"], prefix="/api/users")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[

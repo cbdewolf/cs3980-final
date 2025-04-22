@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import '../styles/login.css'
 import NavBar from '../components/NavBar'
 import { useNavigate } from "react-router-dom";
+import { UserContext } from '../contexts/UserContext';
 
 
 const Login = () => {
@@ -11,6 +12,7 @@ const Login = () => {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
+    const { setToken } = useContext(UserContext)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -24,7 +26,7 @@ const Login = () => {
         }
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/auth/login', {
+            const response = await fetch('http://127.0.0.1:8000/api/users/login', {
                 method:'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams({
@@ -37,6 +39,7 @@ const Login = () => {
             if (!response.ok) {
                 throw new Error(data.detail || 'Login failed')
             }
+            setToken(data.access_token)
             localStorage.setItem("token", data.access_token)
             navigate("/dashboard")
             
