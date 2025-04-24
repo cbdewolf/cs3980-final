@@ -1,0 +1,52 @@
+.home-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  
+  .hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    padding: 4rem 0;
+  }
+  
+  .hero-content {
+    max-width: 600px;
+    text-align: center;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero-content p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .btn {
+    padding: 0.8rem 1.6rem;
+    font-size: 1.1rem;
+    text-decoration: none;
+    border-radius: 8px;
+  }
+  
+  .btn.primary {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn.secondary {
+    background-color: transparent;
+    color: #007bff;
+    border: 1px solid #007bff;
+  }
