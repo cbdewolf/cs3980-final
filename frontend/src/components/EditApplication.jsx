@@ -17,7 +17,6 @@ const EditApplication = ({ application, onSubmit, onCancel }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const updatedApplication = {
-      _id: application._id,
       company,
       position,
       status,

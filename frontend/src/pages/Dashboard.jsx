@@ -86,24 +86,21 @@ const Dashboard = () => {
   const handleEditSubmit = async (updatedApp) => {
     try {
       const res = await fetch(
-        `http://localhost:8000/api/applications/${updatedApp._id}`,
+        `http://localhost:8000/api/applications/${currentApp._id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            ...updatedApp,
-            _id: currentApp._id,
-          }),
+          body: JSON.stringify(updatedApp),
           Authorization: `Bearer ${token}`,
         }
       );
       if (!res.ok) throw new Error("failed to update app");
-      const updatedAppData = await response.json();
-      fetchApplications();
-      //setShowModal(false);
+      //const updatedAppData = await res.json();
+      await fetchApplications();
       setCurrentApp(null);
+      setShowModal(false);
     } catch (error) {
       console.error("update app failed, ", error);
     }

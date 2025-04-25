@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import "../styles/application-form.css";
 import { UserContext } from "../contexts/UserContext";
 
-const ApplicationForm = ({ onSubmit, onCancel, initialValues = {} }) => {
+const ApplicationForm = ({ onSubmit, onCancel, initialValues }) => {
   const [company, setCompany] = useState(initialValues.company || "");
   const [position, setPosition] = useState(initialValues.position || "");
   const [status, setStatus] = useState(initialValues.status || "Applied");
