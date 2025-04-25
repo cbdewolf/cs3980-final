@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import '../styles/edit-application.css';
+import React, { useState, useEffect } from "react";
+import "../styles/edit-application.css";
 
 const EditApplication = ({ application, onSubmit, onCancel }) => {
-  const [company, setCompany] = useState('');
-  const [position, setPosition] = useState('');
-  const [status, setStatus] = useState('Applied');
+  const [company, setCompany] = useState("");
+  const [position, setPosition] = useState("");
+  const [status, setStatus] = useState("Applied");
 
   useEffect(() => {
     if (application) {
@@ -20,7 +20,9 @@ const EditApplication = ({ application, onSubmit, onCancel }) => {
       _id: application._id,
       company,
       position,
-      status
+      status,
+      notes,
+      created_by,
     };
     onSubmit(updatedApplication);
   };
@@ -31,19 +33,19 @@ const EditApplication = ({ application, onSubmit, onCancel }) => {
       <form className="application-form" onSubmit={handleSubmit}>
         <label>
           Company Name:
-          <input 
-            type="text" 
-            value={company} 
-            onChange={(e) => setCompany(e.target.value)} 
+          <input
+            type="text"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
             required
           />
         </label>
         <label>
           Position:
-          <input 
-            type="text" 
-            value={position} 
-            onChange={(e) => setPosition(e.target.value)} 
+          <input
+            type="text"
+            value={position}
+            onChange={(e) => setPosition(e.target.value)}
             required
           />
         </label>
@@ -58,7 +60,9 @@ const EditApplication = ({ application, onSubmit, onCancel }) => {
         </label>
         <div className="form-actions">
           <button type="submit">Save Changes</button>
-          <button type="button" onClick={onCancel}>Cancel</button>
+          <button type="button" onClick={onCancel}>
+            Cancel
+          </button>
         </div>
       </form>
     </div>

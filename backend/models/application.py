@@ -10,6 +10,7 @@ class Application(Document):
     date_applied: date
     status: str
     notes: Optional[str] = None
+    created_by: str
 
     class Settings:
         name = "applications"
@@ -21,3 +22,4 @@ class ApplicationRequest(BaseModel):
     date_applied: date
     status: str
     notes: Optional[str] = None
+    created_by: str

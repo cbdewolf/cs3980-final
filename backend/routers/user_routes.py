@@ -55,7 +55,8 @@ async def sign_up(user: UserRequest):
         password=hashed_password,
     )
     await new_user.create()
-    return {"message": "User created successfully"}
+    token = create_access_token({"username": user.username})
+    return {"access_token": token, "username": user.username}
 
 
 @user_router.post("/login")

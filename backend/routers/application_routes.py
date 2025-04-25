@@ -1,6 +1,8 @@
 from beanie import PydanticObjectId
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
+from backend.auth.jwt_auth import TokenData
 from backend.models.application import Application, ApplicationRequest
+from backend.routers.user_routes import get_current_user
 
 # will have to implement user logic soon
 
@@ -9,8 +11,10 @@ application_router = APIRouter()
 
 # get all apps
 @application_router.get("")
-async def get_applications():
-    return await Application.find_all().to_list()
+async def get_applications(current_user: TokenData = Depends(get_current_user)):
+    return await Application.find(
+        Application.created_by == current_user.username
+    ).to_list()
 
 
 # get app by an id
@@ -26,13 +30,16 @@ async def get_application_by_id(id: PydanticObjectId):
 
 # create an app
 @application_router.post("", status_code=status.HTTP_201_CREATED)
-async def add_application(application: ApplicationRequest):
+async def add_application(
+    application: ApplicationRequest, current_user: TokenData = Depends(get_current_user)
+):
     new_application = Application(
         company=application.company,
         position=application.position,
         date_applied=application.date_applied,
         status=application.status,
         notes=application.notes,
+        created_by=current_user.username,
     )
     await Application.insert(new_application)
     return new_application
@@ -51,6 +58,7 @@ async def update_application(id: PydanticObjectId, application: ApplicationReque
     existing_application.date_applied = application.date_applied
     existing_application.status = application.status
     existing_application.notes = application.notes
+    existing_application.created_by = application.created_by
     await existing_application.save()
     return existing_application
 
@@ -65,3 +73,11 @@ async def remove_application(id: PydanticObjectId):
         )
     await application.delete()
     return {"message": "Application deleted successfully"}
+
+
+@application_router.delete("")
+async def clear_all_payments(current_user: TokenData = Depends(get_current_user)):
+    result = await Application.find(
+        Application.created_by == current_user.username
+    ).delete()
+    return {"deleted_count": str(result)}
