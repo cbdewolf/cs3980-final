@@ -1,37 +1,59 @@
-import React, { useState, useEffect, useRef } from 'react';
+// TodoList.jsx - Updated to connect with backend
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import TodoItem from './TodoItem.jsx';
 import Modal from './Modal.jsx';
 import '../styles/reminders.css';
 import { scheduleLocalNotification } from './Notifications.jsx';
+import { UserContext } from '../contexts/UserContext';
 
 const ToDoList = () => {
-  const [tasks, setTasks] = useState([
-    { id: 1, text: 'Doctor Appointment', completed: true, date: '2025-04-21', time: '09:00' },
-    { id: 2, text: 'Meeting at School', completed: false, date: '2025-04-22', time: '14:30' }
-  ]);
+  const [tasks, setTasks] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ text: '', date: '', time: '' });
   const [editingTaskId, setEditingTaskId] = useState(null);
-  // Ref to track which tasks have already been scheduled
   const scheduledTasksRef = useRef(new Set());
+  const { user, token } = useContext(UserContext);
 
-  // Schedule notifications only once per task
-  useEffect(() => {
-    if (Notification.permission === 'granted') {
-      tasks.forEach(task => {
-        if (!scheduledTasksRef.current.has(task.id)) {
-          const timestamp = new Date(`${task.date}T${task.time}`).getTime();
-          if (timestamp > Date.now()) {
-            const title = '🔔 Reminder';
-            const body = `${formatTime(task.time)} – ${task.text}`;
-            scheduleLocalNotification(title, body, timestamp);
-          }
-          // Mark as scheduled
-          scheduledTasksRef.current.add(task.id);
+  // Fetch reminders from backend
+  const fetchReminders = async () => {
+    if (!token) return;
+    
+    try {
+      const response = await fetch('http://localhost:8000/api/reminders', {
+        headers: { 
+          Authorization: `Bearer ${token}` 
         }
       });
+      
+      if (!response.ok) throw new Error('Failed to fetch reminders');
+      
+      const data = await response.json();
+      setTasks(data);
+      
+      // Schedule notifications for fetched reminders
+      if (Notification.permission === 'granted') {
+        data.forEach(task => {
+          if (!scheduledTasksRef.current.has(task._id)) {
+            const timestamp = new Date(`${task.date}T${task.time}`).getTime();
+            if (timestamp > Date.now()) {
+              const title = '🔔 Reminder';
+              const body = `${formatTime(task.time)} – ${task.text}`;
+              scheduleLocalNotification(title, body, timestamp);
+            }
+            scheduledTasksRef.current.add(task._id);
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching reminders:', error);
     }
-  }, [tasks]);
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchReminders();
+    }
+  }, [user, token]);
 
   const openAddModal = () => {
     setEditingTaskId(null);
@@ -40,8 +62,12 @@ const ToDoList = () => {
   };
 
   const openEdit = task => {
-    setEditingTaskId(task.id);
-    setForm({ text: task.text, date: task.date, time: task.time });
+    setEditingTaskId(task._id);
+    setForm({ 
+      text: task.text, 
+      date: task.date || '', 
+      time: task.time || '' 
+    });
     setShowModal(true);
   };
 
@@ -63,42 +89,106 @@ const ToDoList = () => {
         return;
       }
     }
+    
     if (Notification.permission !== 'granted') {
       alert('Notifications are not enabled. Please enable them in your browser settings.');
       return;
     }
 
-    // Create or update task; notification scheduling handled in effect
-    if (editingTaskId) {
-      setTasks(prev =>
-        prev.map(task =>
-          task.id === editingTaskId
-            ? { ...task, text: text.trim(), date, time }
-            : task
-        )
-      );
-    } else {
-      const newTask = { id: Date.now(), text: text.trim(), completed: false, date, time };
-      setTasks(prev => [...prev, newTask]);
+    try {
+      if (editingTaskId) {
+        // Update existing reminder
+        const response = await fetch(`http://localhost:8000/api/reminders/${editingTaskId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            text: text.trim(),
+            completed: false,
+            date,
+            time
+          })
+        });
+        
+        if (!response.ok) throw new Error('Failed to update reminder');
+        
+      } else {
+        // Create new reminder
+        const response = await fetch('http://localhost:8000/api/reminders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            text: text.trim(),
+            completed: false,
+            date,
+            time
+          })
+        });
+        
+        if (!response.ok) throw new Error('Failed to create reminder');
+      }
+      
+      // Refresh the reminders list
+      fetchReminders();
+      closeModal();
+      
+    } catch (error) {
+      console.error('Error saving reminder:', error);
+      alert('Failed to save reminder. Please try again.');
     }
-
-    closeModal();
   };
 
-  const deleteTask = id =>
-    setTasks(prevTasks => prevTasks.filter(task => task.id !== id));
+  const deleteTask = async id => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/reminders/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      if (!response.ok) throw new Error('Failed to delete reminder');
+      
+      fetchReminders();
+    } catch (error) {
+      console.error('Error deleting reminder:', error);
+    }
+  };
 
-  const toggleCompleted = id =>
-    setTasks(prevTasks =>
-      prevTasks.map(task =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
+  const toggleCompleted = async id => {
+    try {
+      const task = tasks.find(t => t._id === id);
+      if (!task) return;
+      
+      const response = await fetch(`http://localhost:8000/api/reminders/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          ...task,
+          completed: !task.completed
+        })
+      });
+      
+      if (!response.ok) throw new Error('Failed to update reminder');
+      
+      fetchReminders();
+    } catch (error) {
+      console.error('Error updating reminder:', error);
+    }
+  };
 
   // Sort tasks by datetime
   const sortedTasks = [...tasks].sort((a, b) => {
-    const aDateTime = new Date(`${a.date}T${a.time}`);
-    const bDateTime = new Date(`${b.date}T${b.time}`);
+    const aDateTime = a.date && a.time ? new Date(`${a.date}T${a.time}`) : new Date(0);
+    const bDateTime = b.date && b.time ? new Date(`${b.date}T${b.time}`) : new Date(0);
     return aDateTime - bDateTime;
   });
 
@@ -106,7 +196,7 @@ const ToDoList = () => {
     <div className="todo-list">
       {sortedTasks.map(task => (
         <TodoItem
-          key={task.id}
+          key={task._id}
           task={task}
           deleteTask={deleteTask}
           toggleCompleted={toggleCompleted}
@@ -114,9 +204,11 @@ const ToDoList = () => {
         />
       ))}
 
-      <button className="add-new-application" onClick={openAddModal}>
-        Add Reminder
-      </button>
+      {user && (
+        <button className="add-new-application" onClick={openAddModal}>
+          Add Reminder
+        </button>
+      )}
 
       <Modal isOpen={showModal} onClose={closeModal}>
         <div className="app-form-container">
@@ -161,6 +253,7 @@ const ToDoList = () => {
 };
 
 const formatTime = hhmm => {
+  if (!hhmm) return '';
   const [h, m] = hhmm.split(':').map(Number);
   const suffix = h >= 12 ? 'pm' : 'am';
   const hour12 = ((h + 11) % 12) + 1;

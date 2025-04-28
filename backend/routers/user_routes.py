@@ -105,3 +105,60 @@ async def update_user(
     update_dict = update_data.model_dump(exclude_unset=True)
     await existing_user.set(update_dict)
     return {"message": "User updated successfully"}
+
+@user_router.get("/admin/users")
+async def get_all_users(current_user: TokenData = Depends(get_user)):
+    # Check if user is admin
+    existing_user = await User.find_one(User.username == current_user.username)
+    if not existing_user or not existing_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required",
+        )
+    
+    # Get all users
+    all_users = await User.find_all().to_list()
+    return all_users
+
+@user_router.put("/admin/users/{user_id}")
+async def admin_update_user(
+    user_id: PydanticObjectId,
+    update_data: UserUpdateRequest,
+    current_user: TokenData = Depends(get_user)
+):
+    # Check if user is admin
+    admin_user = await User.find_one(User.username == current_user.username)
+    if not admin_user or not admin_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required",
+        )
+    
+    # Find user to update
+    user_to_update = await User.get(user_id)
+    if not user_to_update:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+        )
+    
+    # Update the user
+    update_dict = update_data.model_dump(exclude_unset=True)
+    await user_to_update.set(update_dict)
+    return {"message": "User updated successfully"}
+
+@user_router.delete("/admin/users/{user_id}")
+async def admin_delete_user(
+    user_id: PydanticObjectId,
+    current_user: TokenData = Depends(get_user)
+):
+    # Check if user is admin
+    admin_user = await User.find_one(User.username == current_user.username)
+    if not admin_user or not admin_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access required",
+        )
+    
+    # Find user to delete
+    user_to_
