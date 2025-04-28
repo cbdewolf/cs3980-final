@@ -11,7 +11,8 @@ export default function Companies() {
         name: '',
         description: '',
         website: '',
-        applications: []
+        applications: [],
+        created_by: ''
     });
     const { user, token } = useContext(UserContext);
 
@@ -61,7 +62,8 @@ export default function Companies() {
                     name: '',
                     description: '',
                     website: '',
-                    applications: []
+                    applications: [],
+                    created_by: user.username
                 });
                 fetchCompanies();
             }

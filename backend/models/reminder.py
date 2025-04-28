@@ -8,6 +8,7 @@ class Reminder(Document):
     completed: bool
     date: Optional[str] = ""
     time: Optional[str] = ""
+    created_by: str
 
     class Settings:
         name = "reminders"
@@ -18,3 +19,4 @@ class ReminderRequest(BaseModel):
     completed: bool
     date: Optional[str] = ""
     time: Optional[str] = ""
+    created_by: str

@@ -12,6 +12,7 @@ class Company(Document):
     description: str
     website: str
     applications: list[str]
+    created_by: str
 
     class Settings:
         name = "companies"
@@ -22,3 +23,4 @@ class CompanyRequest(BaseModel):
     description: str
     website: str
     applications: list[str]
+    created_by: str

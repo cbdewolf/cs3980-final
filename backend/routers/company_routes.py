@@ -1,14 +1,16 @@
 from beanie import PydanticObjectId
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
+from backend.auth.jwt_auth import TokenData
 from backend.models.company import Company, CompanyRequest
+from backend.routers.user_routes import get_current_user
 
 company_router = APIRouter()
 
 
 # get all companies
 @company_router.get("")
-async def get_companies():
-    return await Company.find_all().to_list()
+async def get_companies(current_user: TokenData = Depends(get_current_user)):
+    return await Company.find(Company.created_by == current_user.username).to_list()
 
 
 # get company by an id
@@ -24,13 +26,15 @@ async def get_Company_by_id(id: PydanticObjectId):
 
 # create an company
 @company_router.post("", status_code=status.HTTP_201_CREATED)
-async def add_company(company: CompanyRequest):
+async def add_company(
+    company: CompanyRequest, current_user: TokenData = Depends(get_current_user)
+):
     new_company = Company(
         name=company.name,
         description=company.description,
         website=company.website,
         applications=company.applications,
-        user_id=company.user_id,
+        created_by=current_user.username,
     )
     await Company.insert(new_company)
     return new_company
@@ -48,6 +52,7 @@ async def update_company(id: PydanticObjectId, company: CompanyRequest):
     existing_company.description = company.description
     existing_company.website = company.website
     existing_company.applications = company.applications
+    existing_company.created_by = company.created_by
     await existing_company.save()
     return existing_company
 

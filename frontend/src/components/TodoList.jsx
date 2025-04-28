@@ -52,6 +52,8 @@ const ToDoList = () => {
   useEffect(() => {
     if (user) {
       fetchReminders();
+    } else {
+      setTasks([]);
     }
   }, [user, token]);
 
@@ -108,7 +110,8 @@ const ToDoList = () => {
             text: text.trim(),
             completed: false,
             date,
-            time
+            time,
+            created_by: user.username
           })
         });
         
@@ -126,7 +129,8 @@ const ToDoList = () => {
             text: text.trim(),
             completed: false,
             date,
-            time
+            time,
+            created_by: user.username
           })
         });
         
@@ -144,6 +148,7 @@ const ToDoList = () => {
   };
 
   const deleteTask = async id => {
+    if (!confirm('Are you sure you want to delete this reminder?')) return;
     try {
       const response = await fetch(`http://localhost:8000/api/reminders/${id}`, {
         method: 'DELETE',

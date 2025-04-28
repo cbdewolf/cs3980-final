@@ -5,7 +5,7 @@ const TodoItem = ({ task, deleteTask, toggleCompleted, openEdit }) => (
     <input
       type="checkbox"
       checked={task.completed}
-      onChange={() => toggleCompleted(task.id)}
+      onChange={() => toggleCompleted(task._id)}
     />
     <div className="task-content">
       <p className={task.completed ? 'completed' : ''}>{task.text}</p>
@@ -13,7 +13,7 @@ const TodoItem = ({ task, deleteTask, toggleCompleted, openEdit }) => (
     </div>
     <div className="actions">
       <button onClick={() => openEdit(task)} className="edit-btn">✎</button>
-      <button onClick={() => deleteTask(task.id)} className="delete-btn">×</button>
+      <button onClick={() => deleteTask(task._id)} className="delete-btn">×</button>
     </div>
   </div>
 );
