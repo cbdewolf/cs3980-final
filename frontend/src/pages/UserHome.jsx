@@ -54,16 +54,24 @@ export default function UserHome() {
                 const formData = new FormData();
                 formData.append('file', fileUpload);
                 
-                const uploadResponse = await fetch('http://localhost:8000/api/users/upload', {
-                    method: 'POST',
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    },
-                    body: formData
-                });
-                
-                if (!uploadResponse.ok) {
-                    throw new Error('Failed to upload file');
+                try {
+                    const uploadResponse = await fetch('http://localhost:8000/api/users/upload', {
+                        method: 'POST',
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        },
+                        body: formData
+                    });
+                    
+                    if (!uploadResponse.ok) {
+                        throw new Error('Failed to upload file');
+                    }
+                    
+                    // File uploaded successfully
+                    setFileUpload(null);
+                } catch (error) {
+                    console.error('Error uploading file:', error);
+                    alert('Failed to upload file. Please try again.');
                 }
             }
             
@@ -196,12 +204,13 @@ export default function UserHome() {
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Upload Document (Resume, Cover Letter, etc.)</label>
+                                <label>Upload Documents</label>
                                 <input
                                     type="file"
                                     onChange={handleFileChange}
-                                    accept=".pdf,.doc,.docx"
+                                    accept=".pdf,.doc,.docx,.txt,.jpg,.png"
                                 />
+                                <small>Upload resume, cover letter, or other documents</small>
                             </div>
                             <div className="form-actions">
                                 <button 

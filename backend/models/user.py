@@ -12,10 +12,11 @@ class User(Document):
     position: Optional[str] = ""
     school: Optional[str] = ""
     major: Optional[str] = ""
+    is_admin: bool = False  # Add this field
+    documents: Optional[list] = []  # Add this for document storage
 
     class Settings:
         name = "users"
-
 
 class UserRequest(BaseModel):
     """
@@ -37,3 +38,4 @@ class UserUpdateRequest(BaseModel):
     position: Optional[str] = None
     school: Optional[str] = None
     major: Optional[str] = None
+    is_admin: Optional[bool] = None

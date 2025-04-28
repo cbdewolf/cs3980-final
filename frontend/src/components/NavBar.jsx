@@ -3,9 +3,7 @@ import '../styles/nav-bar.css';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
 
-// the user will evnetually fetched from backend to get the user who is logged in
 export default function NavBar() {
-
     const { user, logout } = useContext(UserContext);
 
     return (
@@ -14,6 +12,9 @@ export default function NavBar() {
                 <Link to="/dashboard" className="nav-item">Applications</Link>
                 <Link to="/companies" className="nav-item">Companies</Link>
                 <Link to="/reminders" className="nav-item">Reminders</Link>
+                {user && user.is_admin && (
+                    <Link to="/admin" className="nav-item admin-link">Admin Panel</Link>
+                )}
             </div>
             <div className="nav-right">
                 {user ? (
