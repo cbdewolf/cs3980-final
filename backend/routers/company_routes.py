@@ -15,7 +15,7 @@ async def get_companies(current_user: TokenData = Depends(get_current_user)):
 
 # get company by an id
 @company_router.get("/{id}")
-async def get_Company_by_id(id: PydanticObjectId):
+async def get_company_by_id(id: PydanticObjectId):
     company = await Company.get(id)
     if not company:
         raise HTTPException(
@@ -59,7 +59,7 @@ async def update_company(id: PydanticObjectId, company: CompanyRequest):
 
 # delete an company
 @company_router.delete("/{id}")
-async def remove_Company(id: PydanticObjectId):
+async def remove_company(id: PydanticObjectId):
     company = await Company.get(id)
     if not company:
         raise HTTPException(

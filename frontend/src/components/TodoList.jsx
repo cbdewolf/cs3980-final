@@ -17,22 +17,22 @@ const ToDoList = () => {
   // Fetch reminders from backend
   const fetchReminders = async () => {
     if (!token) return;
-    
+
     try {
       const response = await fetch('http://localhost:8000/api/reminders', {
-        headers: { 
-          Authorization: `Bearer ${token}` 
-        }
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      
+
       if (!response.ok) throw new Error('Failed to fetch reminders');
-      
+
       const data = await response.json();
       setTasks(data);
-      
+
       // Schedule notifications for fetched reminders
       if (Notification.permission === 'granted') {
-        data.forEach(task => {
+        data.forEach((task) => {
           if (!scheduledTasksRef.current.has(task._id)) {
             const timestamp = new Date(`${task.date}T${task.time}`).getTime();
             if (timestamp > Date.now()) {
@@ -63,22 +63,22 @@ const ToDoList = () => {
     setShowModal(true);
   };
 
-  const openEdit = task => {
+  const openEdit = (task) => {
     setEditingTaskId(task._id);
-    setForm({ 
-      text: task.text, 
-      date: task.date || '', 
-      time: task.time || '' 
+    setForm({
+      text: task.text,
+      date: task.date || '',
+      time: task.time || '',
     });
     setShowModal(true);
   };
 
   const closeModal = () => setShowModal(false);
 
-  const handleChange = e =>
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleChange = (e) =>
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { text, date, time } = form;
     if (!text.trim() || !date || !time) return;
@@ -91,99 +91,108 @@ const ToDoList = () => {
         return;
       }
     }
-    
+
     if (Notification.permission !== 'granted') {
-      alert('Notifications are not enabled. Please enable them in your browser settings.');
+      alert(
+        'Notifications are not enabled. Please enable them in your browser settings.'
+      );
       return;
     }
 
     try {
       if (editingTaskId) {
         // Update existing reminder
-        const response = await fetch(`http://localhost:8000/api/reminders/${editingTaskId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            text: text.trim(),
-            completed: false,
-            date,
-            time,
-            created_by: user.username
-          })
-        });
-        
+        const response = await fetch(
+          `http://localhost:8000/api/reminders/${editingTaskId}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              text: text.trim(),
+              completed: false,
+              date,
+              time,
+              created_by: user.username,
+            }),
+          }
+        );
+
         if (!response.ok) throw new Error('Failed to update reminder');
-        
       } else {
         // Create new reminder
         const response = await fetch('http://localhost:8000/api/reminders', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             text: text.trim(),
             completed: false,
             date,
             time,
-            created_by: user.username
-          })
+            created_by: user.username,
+          }),
         });
-        
+
         if (!response.ok) throw new Error('Failed to create reminder');
       }
-      
+
       // Refresh the reminders list
       fetchReminders();
       closeModal();
-      
     } catch (error) {
       console.error('Error saving reminder:', error);
       alert('Failed to save reminder. Please try again.');
     }
   };
 
-  const deleteTask = async id => {
+  const deleteTask = async (id) => {
     if (!confirm('Are you sure you want to delete this reminder?')) return;
     try {
-      const response = await fetch(`http://localhost:8000/api/reminders/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`
+      const response = await fetch(
+        `http://localhost:8000/api/reminders/${id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
-      
+      );
+
       if (!response.ok) throw new Error('Failed to delete reminder');
-      
+
       fetchReminders();
     } catch (error) {
       console.error('Error deleting reminder:', error);
     }
   };
 
-  const toggleCompleted = async id => {
+  const toggleCompleted = async (id) => {
     try {
-      const task = tasks.find(t => t._id === id);
+      const task = tasks.find((t) => t._id === id);
       if (!task) return;
-      
-      const response = await fetch(`http://localhost:8000/api/reminders/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          ...task,
-          completed: !task.completed
-        })
-      });
-      
+
+      const response = await fetch(
+        `http://localhost:8000/api/reminders/${id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            ...task,
+            completed: !task.completed,
+          }),
+        }
+      );
+
       if (!response.ok) throw new Error('Failed to update reminder');
-      
+
       fetchReminders();
     } catch (error) {
       console.error('Error updating reminder:', error);
@@ -192,14 +201,16 @@ const ToDoList = () => {
 
   // Sort tasks by datetime
   const sortedTasks = [...tasks].sort((a, b) => {
-    const aDateTime = a.date && a.time ? new Date(`${a.date}T${a.time}`) : new Date(0);
-    const bDateTime = b.date && b.time ? new Date(`${b.date}T${b.time}`) : new Date(0);
+    const aDateTime =
+      a.date && a.time ? new Date(`${a.date}T${a.time}`) : new Date(0);
+    const bDateTime =
+      b.date && b.time ? new Date(`${b.date}T${b.time}`) : new Date(0);
     return aDateTime - bDateTime;
   });
 
   return (
     <div className="todo-list">
-      {sortedTasks.map(task => (
+      {sortedTasks.map((task) => (
         <TodoItem
           key={task._id}
           task={task}
@@ -257,7 +268,7 @@ const ToDoList = () => {
   );
 };
 
-const formatTime = hhmm => {
+const formatTime = (hhmm) => {
   if (!hhmm) return '';
   const [h, m] = hhmm.split(':').map(Number);
   const suffix = h >= 12 ? 'pm' : 'am';

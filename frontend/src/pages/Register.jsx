@@ -1,58 +1,58 @@
-import React, { useState, useContext } from "react";
-import "../styles/register.css";
-import NavBar from "../components/NavBar";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../contexts/UserContext";
+import React, { useState, useContext } from 'react';
+import '../styles/register.css';
+import NavBar from '../components/NavBar';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../contexts/UserContext';
 
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [confirmUsername, setConfirmUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState('');
+  const [confirmUsername, setConfirmUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser, setToken } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setLoading(true);
 
     if (!username || !password || !confirmUsername || !confirmPassword) {
-      setError("Please fill in all fields");
+      setError('Please fill in all fields');
       setLoading(false);
       return;
     }
 
     if (username !== confirmUsername) {
-      setError("Usernames do not match");
+      setError('Usernames do not match');
       setLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError('Passwords do not match');
       setLoading(false);
       return;
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/users/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('http://127.0.0.1:8000/api/users/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.detail || "Registration failed");
+        throw new Error(data.detail || 'Registration failed');
       }
-      localStorage.setItem("token", data.access_token);
+      localStorage.setItem('token', data.access_token);
       setUser(data.user);
       setToken(data.access_token);
-      navigate("/dashboard");
+      navigate('/dashboard');
     } catch (error) {
       setError(error.message);
     } finally {
@@ -109,7 +109,7 @@ const Register = () => {
             </div>
             {error && <p className="error-message">{error}</p>}
             <button type="submit" className="login-button" disabled={loading}>
-              {loading ? "Registering..." : "Register"}
+              {loading ? 'Registering...' : 'Register'}
             </button>
             <div className="register-footer">
               <p>

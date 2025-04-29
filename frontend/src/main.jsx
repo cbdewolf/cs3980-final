@@ -11,7 +11,7 @@ const root = createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <UserProvider> 
+      <UserProvider>
         <App />
       </UserProvider>
     </BrowserRouter>

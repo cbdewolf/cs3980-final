@@ -1,13 +1,13 @@
-import React from "react";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
-import { Routes, Route } from "react-router-dom";
-import Reminders from "./pages/Reminders";
-import UserHome from "./pages/UserHome";
-import Companies from "./pages/Companies";
-import HomePage from "./pages/HomePage";
-import Admin from "./pages/Admin";  // Import the Admin component
+import React from 'react';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import { Routes, Route } from 'react-router-dom';
+import Reminders from './pages/Reminders';
+import UserHome from './pages/UserHome';
+import Companies from './pages/Companies';
+import HomePage from './pages/HomePage';
+import Admin from './pages/Admin'; // Import the Admin component
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
       <Route path="/reminders" element={<Reminders />} />
       <Route path="/userhome" element={<UserHome />} />
       <Route path="/companies" element={<Companies />} />
-      <Route path="/admin" element={<Admin />} />  {/* Add the admin route */}
+      <Route path="/admin" element={<Admin />} /> {/* Add the admin route */}
     </Routes>
   );
 }

@@ -1,19 +1,19 @@
-import React, { useContext, useState } from "react";
-import "../styles/application-form.css";
-import { UserContext } from "../contexts/UserContext";
+import React, { useContext, useState } from 'react';
+import '../styles/application-form.css';
+import { UserContext } from '../contexts/UserContext';
 
 const ApplicationForm = ({ onSubmit, onCancel, initialValues }) => {
-  const [company, setCompany] = useState(initialValues.company || "");
-  const [position, setPosition] = useState(initialValues.position || "");
-  const [status, setStatus] = useState(initialValues.status || "Applied");
-  const [notes, setNotes] = useState(initialValues.notes || "");
+  const [company, setCompany] = useState(initialValues.company || '');
+  const [position, setPosition] = useState(initialValues.position || '');
+  const [status, setStatus] = useState(initialValues.status || 'Applied');
+  const [notes, setNotes] = useState(initialValues.notes || '');
   const { user } = useContext(UserContext);
   // const [dateApplied, setDateApplied] = useState(initialValues.dateApplied || '')
   // add a date picker here soon im too lazy rn
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toISOString().split('T')[0];
     const application = {
       company,
       position,

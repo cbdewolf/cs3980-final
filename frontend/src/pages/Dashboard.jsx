@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
-import "../styles/dashboard.css";
-import NavBar from "../components/NavBar";
-import StatusCard from "../components/StatusCard";
-import AddNewApplication from "../components/AddNewApplication";
-import Modal from "../components/Modal";
-import ApplicationForm from "../components/ApplicationForm";
-import ApplicationTable from "../components/ApplicationTable";
-import EditApplication from "../components/EditApplication";
-import { UserContext } from "../contexts/UserContext";
+import React, { useState, useEffect, useContext } from 'react';
+import '../styles/dashboard.css';
+import NavBar from '../components/NavBar';
+import StatusCard from '../components/StatusCard';
+import AddNewApplication from '../components/AddNewApplication';
+import Modal from '../components/Modal';
+import ApplicationForm from '../components/ApplicationForm';
+import ApplicationTable from '../components/ApplicationTable';
+import EditApplication from '../components/EditApplication';
+import { UserContext } from '../contexts/UserContext';
 
 const Dashboard = () => {
   // in the future, this will be fetched from backend using useEffect
@@ -19,22 +19,22 @@ const Dashboard = () => {
   const { user, token } = useContext(UserContext);
 
   const fetchApplications = async () => {
-    console.log("Window origin:", window.location.origin);
+    console.log('Window origin:', window.location.origin);
     try {
-      const res = await fetch("http://localhost:8000/api/applications", {
+      const res = await fetch('http://localhost:8000/api/applications', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       const data = await res.json();
       if (!res.ok || !Array.isArray(data)) {
-        console.warn("Bad payments response:", data);
+        console.warn('Bad payments response:', data);
         setPayments([]);
         return;
       }
       setApplications(data);
     } catch (error) {
-      console.error("Error fetching applications:", error);
+      console.error('Error fetching applications:', error);
     }
   };
 
@@ -50,35 +50,35 @@ const Dashboard = () => {
   // Handle adding a new application
   const handleAddApplication = async (application) => {
     try {
-      const response = await fetch("http://localhost:8000/api/applications", {
-        method: "POST",
+      const response = await fetch('http://localhost:8000/api/applications', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(application),
       });
 
-      if (!response.ok) throw new Error("failed to add app");
+      if (!response.ok) throw new Error('failed to add app');
       const createdApp = await response.json();
       setApplications((prev) => [...prev, createdApp]);
       setShowModal(false);
     } catch (error) {
-      console.error("add app failed, ", error);
+      console.error('add app failed, ', error);
     }
   };
 
   // Handle editing an application
   const handleEditClick = (app) => {
     setCurrentApp(app);
-    setModalContent("edit");
+    setModalContent('edit');
     setShowModal(true);
   };
 
   // Handle deleting an application
   const handleDeleteClick = (app) => {
     setCurrentApp(app);
-    setModalContent("delete");
+    setModalContent('delete');
     setShowModal(true);
   };
 
@@ -88,21 +88,21 @@ const Dashboard = () => {
       const res = await fetch(
         `http://localhost:8000/api/applications/${currentApp._id}`,
         {
-          method: "PUT",
+          method: 'PUT',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(updatedApp),
           Authorization: `Bearer ${token}`,
         }
       );
-      if (!res.ok) throw new Error("failed to update app");
+      if (!res.ok) throw new Error('failed to update app');
       //const updatedAppData = await res.json();
       await fetchApplications();
       setCurrentApp(null);
       setShowModal(false);
     } catch (error) {
-      console.error("update app failed, ", error);
+      console.error('update app failed, ', error);
     }
   };
 
@@ -112,23 +112,23 @@ const Dashboard = () => {
       const response = await fetch(
         `http://localhost:8000/api/applications/${currentApp._id}`,
         {
-          method: "DELETE",
+          method: 'DELETE',
           Authorization: `Bearer ${token}`,
         }
       );
-      if (!response.ok) throw new Error("failed to delete app");
+      if (!response.ok) throw new Error('failed to delete app');
       fetchApplications();
       setShowModal(false);
       setCurrentApp(null);
     } catch (error) {
-      console.error("delete app failed, ", error);
+      console.error('delete app failed, ', error);
     }
   };
 
   // Render modal content based on current action
   const renderModalContent = () => {
     switch (modalContent) {
-      case "add":
+      case 'add':
         return (
           <ApplicationForm
             onCancel={() => setShowModal(false)}
@@ -136,7 +136,7 @@ const Dashboard = () => {
             initialValues={{}}
           />
         );
-      case "edit":
+      case 'edit':
         return (
           <ApplicationForm
             onCancel={() => setShowModal(false)}
@@ -144,7 +144,7 @@ const Dashboard = () => {
             initialValues={currentApp}
           />
         );
-      case "delete":
+      case 'delete':
         return (
           <div className="delete-confirmation">
             <h3>Delete Application</h3>
@@ -189,25 +189,25 @@ const Dashboard = () => {
           <StatusCard
             label="Applied"
             count={
-              applications.filter((app) => app.status === "Applied").length
+              applications.filter((app) => app.status === 'Applied').length
             }
           />
           <StatusCard
             label="Interview"
             count={
-              applications.filter((app) => app.status === "Interview").length
+              applications.filter((app) => app.status === 'Interview').length
             }
           />
           <StatusCard
             label="Offered"
             count={
-              applications.filter((app) => app.status === "Offered").length
+              applications.filter((app) => app.status === 'Offered').length
             }
           />
           <StatusCard
             label="Rejected"
             count={
-              applications.filter((app) => app.status === "Rejected").length
+              applications.filter((app) => app.status === 'Rejected').length
             }
           />
         </div>
@@ -216,7 +216,7 @@ const Dashboard = () => {
         <div className="dashboard-actions">
           <AddNewApplication
             onClick={() => {
-              setModalContent("add");
+              setModalContent('add');
               setShowModal(true);
             }}
           />

@@ -1,7 +1,7 @@
-import React from "react";
-import "../styles/application-table.css";
-import "../styles/edit-application.css";
-import "../styles/delete-application.css";
+import React from 'react';
+import '../styles/application-table.css';
+import '../styles/edit-application.css';
+import '../styles/delete-application.css';
 
 export default function ApplicationTable({
   applications,

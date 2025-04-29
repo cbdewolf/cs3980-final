@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import "../styles/edit-application.css";
+import React, { useState, useEffect } from 'react';
+import '../styles/edit-application.css';
 
 const EditApplication = ({ application, onSubmit, onCancel }) => {
-  const [company, setCompany] = useState("");
-  const [position, setPosition] = useState("");
-  const [status, setStatus] = useState("Applied");
+  const [company, setCompany] = useState('');
+  const [position, setPosition] = useState('');
+  const [status, setStatus] = useState('Applied');
 
   useEffect(() => {
     if (application) {

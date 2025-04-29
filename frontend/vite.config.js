@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => ({
   plugins: [react()],
@@ -8,4 +8,4 @@ export default defineConfig(({ mode }) => ({
     outDir: '../backend/static', // ✅ MUST match FastAPI
     emptyOutDir: true,
   },
-}))
+}));
