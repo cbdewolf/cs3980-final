@@ -1,3 +1,4 @@
+import logging
 from beanie import PydanticObjectId
 from fastapi import APIRouter, HTTPException, status, Depends
 from backend.auth.jwt_auth import TokenData
@@ -5,6 +6,7 @@ from backend.models.company import Company, CompanyRequest
 from backend.routers.user_routes import get_current_user
 
 company_router = APIRouter()
+logger = logging.getLogger(__name__)
 
 
 # get all companies
@@ -29,6 +31,7 @@ async def get_company_by_id(id: PydanticObjectId):
 async def add_company(
     company: CompanyRequest, current_user: TokenData = Depends(get_current_user)
 ):
+    logger.info(f"{current_user.username} is trying to add a company")
     new_company = Company(
         name=company.name,
         description=company.description,
@@ -42,7 +45,12 @@ async def add_company(
 
 # update company
 @company_router.put("/{id}")
-async def update_company(id: PydanticObjectId, company: CompanyRequest):
+async def update_company(
+    id: PydanticObjectId,
+    company: CompanyRequest,
+    current_user: TokenData = Depends(get_current_user),
+):
+    logger.info(f"{current_user.username} is trying to edit a company")
     existing_company = await Company.get(id)
     if not existing_company:
         raise HTTPException(
@@ -59,7 +67,10 @@ async def update_company(id: PydanticObjectId, company: CompanyRequest):
 
 # delete an company
 @company_router.delete("/{id}")
-async def remove_company(id: PydanticObjectId):
+async def remove_company(
+    id: PydanticObjectId, current_user: TokenData = Depends(get_current_user)
+):
+    logger.info(f"{current_user.username} is trying to delete a company")
     company = await Company.get(id)
     if not company:
         raise HTTPException(

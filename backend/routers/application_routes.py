@@ -1,3 +1,4 @@
+import logging
 from beanie import PydanticObjectId
 from fastapi import APIRouter, Depends, HTTPException, status
 from backend.auth.jwt_auth import TokenData
@@ -7,6 +8,7 @@ from backend.routers.user_routes import get_current_user
 # will have to implement user logic soon
 
 application_router = APIRouter()
+logger = logging.getLogger(__name__)
 
 
 # get all apps
@@ -33,6 +35,7 @@ async def get_application_by_id(id: PydanticObjectId):
 async def add_application(
     application: ApplicationRequest, current_user: TokenData = Depends(get_current_user)
 ):
+    logger.info(f"{current_user.username} is trying to add an application")
     new_application = Application(
         company=application.company,
         position=application.position,
@@ -47,7 +50,12 @@ async def add_application(
 
 # update app
 @application_router.put("/{id}")
-async def update_application(id: PydanticObjectId, application: ApplicationRequest):
+async def update_application(
+    id: PydanticObjectId,
+    application: ApplicationRequest,
+    current_user: TokenData = Depends(get_current_user),
+):
+    logger.info(f"{current_user.username} is trying to add an application")
     existing_application = await Application.get(id)
     if not existing_application:
         raise HTTPException(
@@ -65,7 +73,10 @@ async def update_application(id: PydanticObjectId, application: ApplicationReque
 
 # delete an app
 @application_router.delete("/{id}")
-async def remove_application(id: PydanticObjectId):
+async def remove_application(
+    id: PydanticObjectId, current_user: TokenData = Depends(get_current_user)
+):
+    logger.info(f"{current_user.username} is trying to add an application")
     application = await Application.get(id)
     if not application:
         raise HTTPException(
@@ -73,11 +84,3 @@ async def remove_application(id: PydanticObjectId):
         )
     await application.delete()
     return {"message": "Application deleted successfully"}
-
-
-@application_router.delete("")
-async def clear_all_payments(current_user: TokenData = Depends(get_current_user)):
-    result = await Application.find(
-        Application.created_by == current_user.username
-    ).delete()
-    return {"deleted_count": str(result)}

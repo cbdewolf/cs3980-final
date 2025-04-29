@@ -1,3 +1,4 @@
+import logging
 from beanie import PydanticObjectId
 from fastapi import APIRouter, HTTPException, status, Depends
 from backend.auth.jwt_auth import TokenData
@@ -7,6 +8,7 @@ from backend.routers.user_routes import get_current_user
 # will have to implement user logic soon
 
 reminder_router = APIRouter()
+logger = logging.getLogger(__name__)
 
 
 # get all apps
@@ -31,6 +33,7 @@ async def get_reminder_by_id(id: PydanticObjectId):
 async def add_reminder(
     reminder: ReminderRequest, current_user: TokenData = Depends(get_current_user)
 ):
+    logger.info(f"{current_user.username} is trying to add a reminder")
     new_reminder = Reminder(
         text=reminder.text,
         completed=reminder.completed,
@@ -44,7 +47,12 @@ async def add_reminder(
 
 # update app
 @reminder_router.put("/{id}")
-async def update_reminder(id: PydanticObjectId, reminder: ReminderRequest):
+async def update_reminder(
+    id: PydanticObjectId,
+    reminder: ReminderRequest,
+    current_user: TokenData = Depends(get_current_user),
+):
+    logger.info(f"{current_user.username} is trying to update a reminder")
     existing_reminder = await Reminder.get(id)
     if not existing_reminder:
         raise HTTPException(
@@ -61,7 +69,10 @@ async def update_reminder(id: PydanticObjectId, reminder: ReminderRequest):
 
 # delete an app
 @reminder_router.delete("/{id}")
-async def remove_reminder(id: PydanticObjectId):
+async def remove_reminder(
+    id: PydanticObjectId, current_user: TokenData = Depends(get_current_user)
+):
+    logger.info(f"{current_user.username} is trying to delete a reminder")
     reminder = await Reminder.get(id)
     if not reminder:
         raise HTTPException(

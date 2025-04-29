@@ -1,23 +1,30 @@
 from contextlib import asynccontextmanager
+import logging
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import os
+from backend.logging_setup import setup_logging
 from backend.routers.application_routes import application_router
 from backend.routers.reminder_routes import reminder_router
 from backend.routers.company_routes import company_router
 from backend.routers.user_routes import user_router
 from backend.db.db_context import init_db
 
+setup_logging()
+logger = logging.getLogger(__name__)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup
+    logger.info("Application starts...")
     print("starting app....")
     await init_db()
     yield
     # shutdown
+    logger.info("Application shuts down...")
     print("shutting down app...")
 
 
