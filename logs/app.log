@@ -15,3 +15,4 @@
 2025-04-29 22:44:23,543 INFO backend.routers.reminder_routes:55 t is trying to update a reminder
 2025-04-29 22:44:29,368 INFO backend.routers.reminder_routes:75 t is trying to delete a reminder
 2025-04-29 22:44:48,680 INFO backend.routers.application_routes:58 admin is trying to add an application
+2025-04-29 22:50:36,747 INFO backend.main:22 Application starts...

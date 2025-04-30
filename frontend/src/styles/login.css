@@ -74,3 +74,11 @@
   font-size: 0.9rem;
   margin-top: 0.5rem;
 }
+
+input[type='text'],
+input[type='password'] {
+  background-color: white !important;
+  color: #000 !important;
+  -webkit-text-fill-color: #000 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
