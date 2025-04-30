@@ -134,3 +134,41 @@
   color: #333;
   margin-top: 2rem;
 }
+
+.card-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.card-actions button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.card-actions button.edit-btn {
+  background-color: #e6f3ff;
+  color: #007bff;
+}
+
+.card-actions button.edit-btn:hover {
+  background-color: #d0e9ff;
+}
+
+.card-actions button.delete-btn {
+  background-color: #ffe6e6;
+  color: #dc3545;
+}
+
+.card-actions button.delete-btn:hover {
+  background-color: #ffcccc;
+}
+
+.card-desc {
+  color: black;
+}

@@ -91,9 +91,9 @@ const Dashboard = () => {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(updatedApp),
-          Authorization: `Bearer ${token}`,
         }
       );
       if (!res.ok) throw new Error('failed to update app');
@@ -113,7 +113,9 @@ const Dashboard = () => {
         `http://localhost:8000/api/applications/${currentApp._id}`,
         {
           method: 'DELETE',
-          Authorization: `Bearer ${token}`,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       if (!response.ok) throw new Error('failed to delete app');

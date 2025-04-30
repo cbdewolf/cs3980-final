@@ -14,6 +14,8 @@ export default function Companies() {
     applications: [],
     created_by: '',
   });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState(null);
   const { user, token } = useContext(UserContext);
 
   useEffect(() => {
@@ -47,9 +49,13 @@ export default function Companies() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const url = isEditing
+      ? `http://localhost:8000/api/companies/${editId}`
+      : 'http://localhost:8000/api/companies';
+    const method = isEditing ? 'PUT' : 'POST';
     try {
-      const res = await fetch('http://localhost:8000/api/companies', {
-        method: 'POST',
+      const res = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -58,6 +64,8 @@ export default function Companies() {
       });
       if (res.ok) {
         setShowModal(false);
+        setIsEditing(false);
+        setEditId(null);
         setFormData({
           name: '',
           description: '',
@@ -70,6 +78,36 @@ export default function Companies() {
     } catch (error) {
       console.error('Error adding company:', error);
     }
+  };
+
+  const handleDelete = async (id) => {
+    if (!confirm('Are you sure you want to delete this company?')) return;
+    try {
+      const res = await fetch(`http://localhost:8000/api/companies/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        fetchCompanies();
+      }
+    } catch (error) {
+      console.error('Error deleting company:', error);
+    }
+  };
+
+  const handleEdit = async (company) => {
+    setEditId(company._id);
+    setIsEditing(true);
+    setFormData({
+      name: company.name,
+      description: company.description,
+      website: company.website,
+      applications: company.applications,
+      created_by: user.username,
+    });
+    setShowModal(true);
   };
 
   return (
@@ -90,7 +128,7 @@ export default function Companies() {
               {companies.map((company) => (
                 <div className="company-card" key={company._id}>
                   <h3>{company.name}</h3>
-                  <p>{company.description}</p>
+                  <p className="card-desc">{company.description}</p>
                   <a
                     href={company.website}
                     target="_blank"
@@ -98,6 +136,20 @@ export default function Companies() {
                   >
                     Visit Website
                   </a>
+                  <div className="card-actions">
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEdit(company)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(company._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -110,9 +162,16 @@ export default function Companies() {
           <p className="please-login">Please login to view companies</p>
         )}
 
-        <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <Modal
+          isOpen={showModal}
+          onClose={() => {
+            setShowModal(false);
+            setIsEditing(false);
+            setEditId(null);
+          }}
+        >
           <div className="company-form-container">
-            <h3>Add New Company</h3>
+            <h3>{isEditing ? 'Edit Company' : 'Add New Company'}</h3>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label>Company Name</label>
@@ -144,8 +203,15 @@ export default function Companies() {
                 />
               </div>
               <div className="form-actions">
-                <button type="submit">Save</button>
-                <button type="button" onClick={() => setShowModal(false)}>
+                <button type="submit">{isEditing ? 'Update' : 'Save'}</button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowModal(false);
+                    setIsEditing(false);
+                    setEditId(null);
+                  }}
+                >
                   Cancel
                 </button>
               </div>

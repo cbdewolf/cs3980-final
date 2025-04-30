@@ -1,3 +1,17 @@
 2025-04-29 14:14:39,933 INFO backend.main:22 Application starts...
 2025-04-29 14:15:04,506 INFO backend.routers.application_routes:38 t is trying to add an application
 2025-04-29 14:15:10,582 INFO backend.main:27 Application shuts down...
+2025-04-29 22:19:17,430 INFO backend.main:22 Application starts...
+2025-04-29 22:20:31,907 INFO backend.routers.company_routes:34 admin is trying to add a company
+2025-04-29 22:36:56,426 INFO backend.routers.company_routes:34 admin is trying to add a company
+2025-04-29 22:37:14,942 INFO backend.routers.company_routes:73 admin is trying to delete a company
+2025-04-29 22:41:32,754 INFO backend.routers.application_routes:38 t is trying to add an application
+2025-04-29 22:43:44,137 INFO backend.routers.application_routes:58 t is trying to add an application
+2025-04-29 22:43:46,559 INFO backend.routers.application_routes:79 t is trying to add an application
+2025-04-29 22:43:56,563 INFO backend.routers.company_routes:53 t is trying to edit a company
+2025-04-29 22:44:09,199 INFO backend.routers.company_routes:34 t is trying to add a company
+2025-04-29 22:44:10,769 INFO backend.routers.company_routes:73 t is trying to delete a company
+2025-04-29 22:44:22,287 INFO backend.routers.reminder_routes:55 t is trying to update a reminder
+2025-04-29 22:44:23,543 INFO backend.routers.reminder_routes:55 t is trying to update a reminder
+2025-04-29 22:44:29,368 INFO backend.routers.reminder_routes:75 t is trying to delete a reminder
+2025-04-29 22:44:48,680 INFO backend.routers.application_routes:58 admin is trying to add an application

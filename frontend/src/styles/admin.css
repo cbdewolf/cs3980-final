@@ -162,3 +162,9 @@
   border: none;
   color: #333;
 }
+
+.admin-table,
+.admin-table th,
+.admin-table td {
+  color: black;
+}
