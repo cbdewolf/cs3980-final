@@ -4,7 +4,6 @@ from typing import Optional
 
 
 class User(Document):
-    # maybe email in future, lets stick with username/pass for now
     username: str
     password: str
     bio: Optional[str] = ""
