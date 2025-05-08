@@ -118,3 +118,13 @@ The frontend was built in React.
 ### Backend
 
 The backend of this project was built with FastAPI, and uses MongoDB as its database. 
+
+### Testing
+
+To execute our tests, input 
+
+```
+pytest -v
+```
+
+in the ***root*** of the folder, which should be the same terminal as the one you used to launcg FastAPI, install the dependencies, etc.
