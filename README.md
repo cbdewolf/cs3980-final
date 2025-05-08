@@ -2,12 +2,12 @@
 
 ## Overview
 
-For the final for CS:3980, we decided to further develop Jason's Application Tracker App. The main additions include:
+For our final project in CS:3980, we enhanced Jason's Application Tracker App into a full-stack web application with a persistent backend and expanded features.
 - Implementation of a backend database, as opposed to an in-memory data structure. In this case we used MongoDB.
 - Implementation of a user login/register functionality.
 - Addition of the Companies, Reminders, and Users collections.
 - Logging and testing of the app
-- Use of a frontend framework as opposed to vanilla JS, in the case we used React.
+- Use of a frontend framework as opposed to vanilla JS, in this case, we used React.
 
 ## How to Demo
 
@@ -72,11 +72,11 @@ To use the app, first create an account. You will not be able to access the apps
 
 ### Applications
 
-Once you are logged in, you will be sent to the "Applications" page, where you are free to start adding your applications. Simply, click the "Add New Application" button, and input the fields to your desire. Once the application is added, it will display in the table, for example:
+Once you are logged in, you will be sent to the "Applications" page, where you are free to start adding your applications. Simply click the "Add New Application" button, and input the fields to your desire. Once the application is added, it will display in the table, for example:
 
 ![image](https://github.com/user-attachments/assets/654e6cdd-f649-4720-9880-2fb3b937fbb3)
 
-The user is free to edit and delete applications as they please, as well as view the status of their applications at the top, where Total Apps, Applied, Rejected, etc. is displayed.
+The user is free to edit and delete applications as they desired, as well as view the status of their applications at the top, where Total Apps, Applied, Rejected, etc. is displayed.
 
 ### Companies
 
@@ -88,7 +88,7 @@ Once again, users are free to edit and delete companies as they choose.
 
 ### Reminders
 
-Reminders works similarly to the other two collections, with the implementation of a notification feature as well. Simply click "Add Reminder," and input the desired fields. The reminders list will look as follows:
+Reminders works functionaly similarly to the other collections, with the implementation of a notification feature as well. Simply click "Add Reminder," and input the desired fields. The reminders list will look as follows:
 
 ![image](https://github.com/user-attachments/assets/32d03827-2f97-4263-b907-89341a2bc6b0)
 
@@ -96,7 +96,7 @@ Once again, users are free to edit and delete reminders.
 
 ### UserHome
 
-To access the UserHome, click your username at the top right of the screen. The user is then free to add information about themselves, with the goal of adding some basic user customization, as well as file upload/download capabilities. Here is an example of a filled out user profile:
+To access the UserHome, click your username at the top right of the screen. The user is then free to add information about themselves to allow basic customization and file management. Here is an example of a filled out user profile:
 
 ![image](https://github.com/user-attachments/assets/45db9997-d4b5-4092-9821-bac908148ee2)
 
@@ -127,4 +127,4 @@ To execute our tests, input
 pytest -v
 ```
 
-in the ***root*** of the folder, which should be the same terminal as the one you used to launcg FastAPI, install the dependencies, etc.
+in the ***root*** of the folder, which should be the same terminal as the one you used to launch FastAPI, install the dependencies, etc.
